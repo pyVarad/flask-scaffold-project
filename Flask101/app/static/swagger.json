@@ -1,0 +1,282 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "description": "Flask Workbench app.",
+      "version": "1.0.0",
+      "title": "Flask Workbench",
+      "contact": {
+        "email": "pyvarad@gmail.com"
+      },
+      "license": {
+        "name": "MIT",
+        "url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    "servers": [
+      {
+        "url": "/"
+      }
+    ],
+    "tags": [
+      {
+        "name": "User Request",
+        "description": "API for user management."
+      }
+    ],
+    "paths": {
+      "/users": {
+        "get": {
+          "tags": [
+            "User Request"
+          ],
+          "summary": "Returns list of all available users",
+          "responses": {
+            "200": {
+              "description": "OK",
+              "schema": {
+                "$ref": "#/definitions/schemas/userRequests"
+              }
+            },
+            "404": {
+              "description": "Not found.",
+              "schema": {
+                "$ref": "#/definitions/schemas/error"
+              }
+            },
+            "500": {
+              "description": "Internal Server Error.",
+              "schema": {
+                "$ref": "#/definitions/schemas/error"
+              }
+            }
+          }
+        },
+        "post": {
+          "tags": [
+            "User Request"
+          ],
+          "summary": "Create a new user request system",
+          "requestBody": {
+            "description": "User Request Post Object",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/definitions/schemas/userRequestPostBody"
+                }
+              }
+            }
+          },
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "201": {
+              "description": "OK",
+              "schema": {
+                "$ref": "#/definitions/schemas/id"
+              }
+            },
+            "400": {
+              "description": "Failed. Bad post data."
+            }
+          }
+        }
+      },
+      "/user/{username}": {
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "description": "username, unique id for the identifying the user.",
+            "type": "string"
+          }
+        ],
+        "get": {
+          "tags": [
+            "User Request"
+          ],
+          "summary": "Get users with given username.",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "username",
+              "required": true,
+              "description": "Get user by username.",
+              "schema": {
+                "$ref": "#/definitions/schemas/username"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "schema": {
+                "$ref": "#/definitions/schemas/userRequest"
+              }
+            },
+            "400": {
+              "description": "Failed. Misunderstood Request.",
+              "schema": {
+                  "message": "The given user does not exist."
+              }
+            },
+            "404": {
+              "description": "Not found."
+            }
+          }
+        },
+        "put": {
+          "summary": "Update user information for given username.",
+          "tags": [
+            "User Request"
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "username",
+              "required": true,
+              "description": "User request Id",
+              "schema": {
+                "$ref": "#/definitions/schemas/username"
+              }
+            }
+          ],
+          "requestBody": {
+            "description": "User request body.",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/definitions/schemas/userRequest"
+                }
+              }
+            }
+          },
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "schema": {
+                "$ref": "#/definitions/schemas/userRequest"
+              }
+            },
+            "400": {
+              "description": "Failed. Bad post data."
+            }
+          }
+        },
+        "delete": {
+          "summary": "Delete User Request by username",
+          "tags": [
+            "User Request"
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "required": true,
+              "description": "User Request Id",
+              "schema": {
+                "$ref": "#/definitions/schemas/username"
+              }
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "OK",
+              "schema": {
+                "$ref": "#/definitions/schemas/username"
+              }
+            },
+            "400": {
+              "description": "Failed. Misunderstood Request."
+            },
+            "404": {
+              "description": "Not found."
+            }
+          }
+        }
+      }
+    },
+    "definitions": {
+      "schemas": {
+        "username": {
+          "properties": {
+            "username": {
+              "type": "string"
+            }
+          }
+        },
+        "userRequestPostBody": {
+          "type": "object",
+          "properties": {
+            "username": {
+              "type": "string",
+              "format": "string"
+            },
+            "firstName": {
+              "type": "string",
+              "format": "string"
+            },
+            "lastName": {
+              "type": "string",
+              "format": "string"
+            },
+            "emailAddress": {
+              "type": "string",
+              "format": "email"
+            }            
+          }
+        },
+        "userRequest": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "number",
+              "format": "number"
+            },
+            "username": {
+              "type": "string",
+              "format": "string"
+            },
+            "firstName": {
+              "type": "string",
+              "format": "string"
+            },
+            "lastName": {
+              "type": "string",
+              "format": "string"
+            },
+            "emailAddress": {
+              "type": "string",
+              "format": "email"
+            }            
+          }
+        },
+        "userRequests": {
+          "type": "object",
+          "properties": {
+            "users": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/schemas/userRequest"
+              }
+            }
+          }
+        },
+        "error": {
+          "type": "object",
+          "properties": {
+            "message": {
+              "type": "string",
+              "format": "string"
+            }
+          }
+        }
+      }
+    }
+  }
