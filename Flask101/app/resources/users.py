@@ -6,12 +6,10 @@ from logger import logger
 class UserResource(Resource):
     """ User controller.
     """
-
     parser = reqparse.RequestParser()
-    parser.add_argument('username', type=str, required=True, help="Missing mandatory field username")
-    parser.add_argument('firstName', type=str, required=True, help="Missing mandatory field firstName")
-    parser.add_argument('lastName', type=str, required=True, help="Missing mandatory field lastName")
-    parser.add_argument('emailAddress', type=str, required=True, help="Missing mandatory field emailAddress")
+    parser.add_argument('firstName', type=str, required=False, help="Missing mandatory field firstName")
+    parser.add_argument('lastName', type=str, required=False, help="Missing mandatory field lastName")
+    parser.add_argument('emailAddress', type=str, required=False, help="Missing mandatory field emailAddress")
 
     def get(self, userId):
         logger.info("Get user by id.")
@@ -36,9 +34,9 @@ class UserResource(Resource):
         if user:
             logger.debug(f"The {userId} already exists, hence updating the userInfo.")
 
-            user.emailAddress = data['emailAddress'] if 'emailAddress' in data else user.emailAddress
-            user.lastName = data['lastName'] if 'lastName' in data else user.lastName
-            user.firstName = data['firstName'] if 'firstName' in data else user.firstName
+            user.emailAddress = data['emailAddress'] if data.get('emailAddress') else user.emailAddress
+            user.lastName = data['lastName'] if data.get('lastName') else user.lastName
+            user.firstName = data['firstName'] if data.get('firstName') in data else user.firstName
         
             user = user.add()
             logger.debug(f"Successfully updated the user {userId}.")
@@ -53,7 +51,6 @@ class UserResource(Resource):
 class UsersResource(Resource):
     """ User[s] controller.
     """
-
     parser = reqparse.RequestParser()
     parser.add_argument('username', type=str, required=True, help="Missing mandatory field username")
     parser.add_argument('firstName', type=str, required=True, help="Missing mandatory field firstName")
@@ -68,7 +65,7 @@ class UsersResource(Resource):
 
     def post(self):
         logger.info("Add new user.")
-        data = UserResource.parser.parse_args()
+        data = UsersResource.parser.parse_args()
 
         user = User.findById(data['username'])
         if user:

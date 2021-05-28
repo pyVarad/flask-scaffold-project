@@ -19,12 +19,14 @@ class User(db.Model):
     def add(self):
         logger.info(f"Add new user with username: {self.username}")
         db.session.add(self)
+        db.session.commit()
         db.session.flush()
         return self
 
     def delete(self):
         logger.info(f"Delete user with username: {self.username}")
         db.session.delete(self)
+        db.session.commit()
         db.session.flush()
 
         return self
