@@ -1,0 +1,8 @@
+DEBUG = true
+SECRET_KEY = "this-is-for-Development"
+SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
+SQLALCHEMY_TRACK_MODIFICATIONS = false
+LOG_REQUEST_ID_LOG_ALL_REQUESTS = true
+LOG_REQUEST_ID_GENERATE_IF_NOT_FOUND = true
+SWAGGER_URL = "/swagger"
+SWAGGER_API_URL = "/static/swagger.json"

@@ -40,9 +40,9 @@ class UserResource(Resource):
         
             user = user.add()
             logger.debug(f"Successfully updated the user {userId}.")
-            return user.json()
+            return user.json(), 201
 
-        logger.deberrorug(f"Missing user {userId}.")
+        logger.debug(f"Missing user {userId}.")
         return {"message": f"The {userId} does not exist!"}, 400
         
 
@@ -76,4 +76,4 @@ class UsersResource(Resource):
         user = user.add()
         logger.debug(f"Successfully added the user: {data['username']}.")
 
-        return user.json()    
+        return user.json(), 201 
