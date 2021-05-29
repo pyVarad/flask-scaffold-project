@@ -1,4 +1,3 @@
-import os
 import toml
 from flask import Flask
 from flask_restful import Api
@@ -35,9 +34,3 @@ def create_app(config):
 def append_request_id(response):
     response.headers.add('X-REQUEST-ID', current_request_id())
     return response
-
-
-if __name__ == "__main__":
-    app_config = os.getenv('APP_CONFIG', 'config/dev.toml')
-    create_app(app_config)
-    app.run(port=5000, debug=True)

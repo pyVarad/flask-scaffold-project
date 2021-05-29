@@ -5,3 +5,4 @@ flask-SQLAlchemy==2.5.1
 flask-swagger-ui==3.36.0
 pytest==6.2.4
 Flask-Log-Request-ID==0.10.1
+coverage==5.5

@@ -34,9 +34,9 @@ class UserResource(Resource):
         if user:
             logger.debug(f"The {userId} already exists, hence updating the userInfo.")
 
-            user.emailAddress = data['emailAddress'] if data.get('emailAddress') else user.emailAddress
-            user.lastName = data['lastName'] if data.get('lastName') else user.lastName
-            user.firstName = data['firstName'] if data.get('firstName') in data else user.firstName
+            user.emailAddress = data.get('emailAddress', user.emailAddress)
+            user.lastName = data.get('lastName', user.lastName)
+            user.firstName = data.get('firstName', user.firstName) 
         
             user = user.add()
             logger.debug(f"Successfully updated the user {userId}.")
